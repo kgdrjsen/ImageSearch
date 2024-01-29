@@ -44,6 +44,7 @@ class SearchAdapter(private var items : List<Document>) :
             .substring(0,19)
             .replace("T"," ")
 
+
         holder.locate.text = items[position].display_sitename
 
         val loc = items[position].display_sitename
