@@ -46,6 +46,7 @@ class MyItemsFragment : Fragment() {
     ): View? {
         _binding = FragmentMyItemsBinding.inflate(inflater,container,false)
 
+
         return binding.root
         Log.d("MyItemsFragment","#aaa onCreateView")
 

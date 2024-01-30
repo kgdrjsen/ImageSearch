@@ -48,10 +48,12 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun unLike(item: MyItems) {
-        if (myItemList.contains(item)) {
-            myItemList.remove(item)
-            Log.d("MainActivity","#aaa unLike")
-        }
+//        if (myItemList.contains(item)) {
+//            myItemList.remove(item)
+//            Log.d("MainActivity", "#aaa unLike")
+//        }
+        myItemList.remove(item)
+        Log.d("MainActivity", "#aaa unLike")
     }
     fun myItemList() : MutableList<MyItems> {
         return myItemList
