@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import com.android.imagesearch.adapter.ViewPagerAdapter
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val tabTextList = listOf("검색","내 보관함")
     private val tabIconList = listOf(R.drawable.search,R.drawable.youtube)
 
-    var itemBox : ArrayList<MyItems> = ArrayList()
+    var myItemList : ArrayList<MyItems> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +41,20 @@ class MainActivity : AppCompatActivity() {
 
     //좋아요 기능
     fun like(item : MyItems) {
-        if (!itemBox.contains(item)){
-            itemBox.add(item)
+        if (!myItemList.contains(item)) {
+            myItemList.add(item)
+            Log.d("MainActivity","#aaa like")
         }
+
+    }
+    fun unLike(item: MyItems) {
+        if (myItemList.contains(item)) {
+            myItemList.remove(item)
+            Log.d("MainActivity","#aaa unLike")
+        }
+    }
+    fun myItemList() : MutableList<MyItems> {
+        return myItemList
     }
     //뒤로가기 구현해보기?
 //    interface OnBackPressedListener {

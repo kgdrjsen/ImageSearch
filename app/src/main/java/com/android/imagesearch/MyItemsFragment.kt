@@ -1,65 +1,88 @@
 package com.android.imagesearch
 
+import android.content.Context
 import android.os.Binder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import com.android.imagesearch.adapter.MyItemsAdapter
+import com.android.imagesearch.adapter.SearchAdapter
+import com.android.imagesearch.data.Document
+import com.android.imagesearch.data.MyItems
 import com.android.imagesearch.databinding.FragmentMyItemsBinding
+import com.android.imagesearch.databinding.FragmentSearchBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyItemsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyItemsFragment : Fragment() {
-    lateinit var binding : FragmentMyItemsBinding
+    private var _binding : FragmentMyItemsBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var mContext: Context
+//    private var myList : List<MyItems> = listOf()
+//    private var myList = (mContext as MainActivity).myItemList()
+    private lateinit var myList : List<MyItems>
+//    private var myItemsAdapter =  MyItemsAdapter(myList)
+    private lateinit var myItemsAdapter : MyItemsAdapter
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+//    private var myItemList : List<MyItems>  = listOf()
+//    private var items = mutableListOf<Document>()
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+        Log.d("MyItemsFragment","#aaa onAttach")
+        myList = (mContext as MainActivity).myItemList()
+        myItemsAdapter = MyItemsAdapter(myList)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentMyItemsBinding.inflate(inflater,container,false)
-//        return inflater.inflate(R.layout.fragment_my_items, container, false)
+        _binding = FragmentMyItemsBinding.inflate(inflater,container,false)
+
         return binding.root
+        Log.d("MyItemsFragment","#aaa onCreateView")
+
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyItemsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyItemsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        //어댑터 연결, myList가 없으면 앱이 죽으므로 필요한 if구문
+//        if (myList.size !=0) {
+//            binding.myitemsRecyclerview.adapter = MyItemsAdapter(myList)
+//            myItemsAdapter = MyItemsAdapter(myList).apply {
+//                myList = myList.toMutableList()
+//                val check = myList[0]
+//                Log.d("MyItemsFragment","#aaa list = $check")
+//            }
+//        }
+
+
+        //그리드뷰
+        binding.myitemsRecyclerview.adapter = myItemsAdapter
+        binding.myitemsRecyclerview.layoutManager = GridLayoutManager(requireContext(),2,
+            GridLayoutManager.VERTICAL,false)
+
+
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        myItemsAdapter.myItemList = (mContext as MainActivity).myItemList()
+        myItemsAdapter.notifyDataSetChanged()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
